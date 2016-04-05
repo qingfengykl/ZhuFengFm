@@ -15,9 +15,9 @@ public class TutorialActivity extends AppCompatActivity {
 
         // TODO:更新教程页显示的设置，下一次不再显示
 
-        SharedPreferences sp = getSharedPreferences("app", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(Constants.SP_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = sp.edit();
-        edit.putInt("tutorial.shown",BuildConfig.VERSION_CODE);
+        edit.putInt(Constants.SP_KEY_TUTORIAL_SHOWN,BuildConfig.VERSION_CODE);
         edit.apply();
 
     }

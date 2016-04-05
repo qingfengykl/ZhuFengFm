@@ -25,9 +25,9 @@ public class SplashActivity extends AppCompatActivity implements  Runnable{
         }
 
         // TODO: 检查是否显示教程页面
-        SharedPreferences sp = getSharedPreferences("app", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(Constants.SP_NAME, MODE_PRIVATE);
         // 获取上一次显示教程的版本号。如果版本号不一致，就应该去显示
-        int vc = sp.getInt("tutorial.shown", 0);
+        int vc = sp.getInt(Constants.SP_KEY_TUTORIAL_SHOWN, 0);
         if (vc!= BuildConfig.VERSION_CODE) {
             startActivity(new Intent(this,TutorialActivity.class));
         }else{
