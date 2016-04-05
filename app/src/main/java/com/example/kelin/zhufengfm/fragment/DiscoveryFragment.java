@@ -2,7 +2,9 @@ package com.example.kelin.zhufengfm.fragment;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,7 @@ import com.example.kelin.zhufengfm.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoveryFragment extends Fragment {
+public class DiscoveryFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
 
     public DiscoveryFragment() {
@@ -24,7 +26,53 @@ public class DiscoveryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.discovery_fragment, container, false);
+        View ret = inflater.inflate(R.layout.discovery_fragment, container, false);
+//        1.获取tabBar
+
+        TabLayout tabBar = (TabLayout) ret.findViewById(R.id.discovery_tab_bar);
+        //必须设置OnTabSelectListener
+        tabBar.setOnTabSelectedListener(this);
+
+        TabLayout.Tab tab = tabBar.newTab();
+        tab.setText("推荐");
+        tabBar.addTab(tab);
+
+         tab = tabBar.newTab();
+        tab.setText("分类");
+        tabBar.addTab(tab);
+
+         tab = tabBar.newTab();
+        tab.setText("广播");
+        tabBar.addTab(tab);
+
+         tab = tabBar.newTab();
+        tab.setText("榜单");
+        tabBar.addTab(tab);
+
+         tab = tabBar.newTab();
+        tab.setText("主播");
+        tabBar.addTab(tab);
+
+        // TODO: TabLayout 与 ViewPager联动
+
+        ViewPager pager = null;
+
+
+        return ret;
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }
