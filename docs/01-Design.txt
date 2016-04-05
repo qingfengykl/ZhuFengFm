@@ -17,7 +17,7 @@
                 主播 DiscoveryDiscoveryAnchorFragment
 
         定制听 CustomFragment
-        下载听 DownLoadFragment
+        下载听 DownLoadTingFragment
         我 PersonalFragment
 
     D.  TODO  确认其余的网络。任务。解析。存储
