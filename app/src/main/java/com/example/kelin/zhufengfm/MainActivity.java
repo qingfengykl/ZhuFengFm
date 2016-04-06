@@ -6,12 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.RadioGroup;
 
 import com.example.kelin.zhufengfm.fragment.CustomFragment;
 import com.example.kelin.zhufengfm.fragment.DiscoveryFragment;
 import com.example.kelin.zhufengfm.fragment.DownLoadTingFragment;
 import com.example.kelin.zhufengfm.fragment.PersonalFragment;
+import com.example.kelin.zhufengfm.utils.HttpUtils;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -60,6 +62,24 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         if (tabBar != null) {
             tabBar.setOnCheckedChangeListener(this);
         }
+
+
+
+        Thread thread = new Thread(){
+
+            @Override
+            public void run() {
+                byte[] data = HttpUtils.doGet("http://mobile.ximalaya.com/mobile/discovery/v1/recommends?channel=and-f6&device=android&includeActivity=true&includeSpecial=true&scale=2&version=4.1.7.1");
+
+                if (data != null) {
+                    String str = data.toString();
+                    Log.d("ddd", "runGET: "+data.length+str);
+                }
+            }
+        };
+
+        thread.start();
+
 
     }
 

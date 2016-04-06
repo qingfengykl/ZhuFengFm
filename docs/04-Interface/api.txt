@@ -123,11 +123,13 @@ URL:
 
 http://mobile.ximalaya.com/mobile/discovery/v1/recommends?channel=and-f6&device=android&includeActivity=true&includeSpecial=true&scale=2&version=4.1.7.1
 
+参数的规则：是必须按照顺序拼接，只有喜马拉雅服务器是这样要求的
+
 http://mobile.ximalaya.com/mobile/discovery/v1/recommends
-	channel	and-f6
+	channel	and-f6   渠道。应用市场的推广
 	device	android
-	includeActivity	true
-	includeSpecial	true
+	includeActivity	true    可做参数
+	includeSpecial	true    可做参数
 	scale	2
 	version	4.1.7.1
 

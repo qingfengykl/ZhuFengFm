@@ -11,3 +11,9 @@
 
 5.  在FragmentPagerAdapter，构造方法中的FragmentManager
     要使用getChildFragmentManager()来创建
+
+6.  带有返回值的方法，推荐只有一个return
+
+7.  现在服务器开发的时候，将网址定义成非常规则的，网址路径像
+    文件夹。看到就只到什么含义；GET，POST，PUT请求都定义好的对应的
+    这种方式通常乘坐rest风格
