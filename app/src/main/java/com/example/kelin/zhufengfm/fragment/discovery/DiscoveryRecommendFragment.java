@@ -1,4 +1,4 @@
-package com.example.kelin.zhufengfm.fragment;
+package com.example.kelin.zhufengfm.fragment.discovery;
 
 
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kelin.zhufengfm.R;
+import com.example.kelin.zhufengfm.fragment.BaseFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoveryRecommendFragment extends Fragment {
+public class DiscoveryRecommendFragment extends BaseFragment {
 
 
     public DiscoveryRecommendFragment() {
@@ -27,4 +28,8 @@ public class DiscoveryRecommendFragment extends Fragment {
         return inflater.inflate(R.layout.discovery_recommend_fragment, container, false);
     }
 
+    @Override
+    public String getFragmentTitle() {
+        return "推荐";
+    }
 }
