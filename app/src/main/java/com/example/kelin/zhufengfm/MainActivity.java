@@ -65,21 +65,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
 
 
-        Thread thread = new Thread(){
-
-            @Override
-            public void run() {
-                byte[] data = HttpUtils.doGet("http://mobile.ximalaya.com/mobile/discovery/v1/recommends?channel=and-f6&device=android&includeActivity=true&includeSpecial=true&scale=2&version=4.1.7.1");
-
-                if (data != null) {
-                    String str = data.toString();
-                    Log.d("ddd", "runGET: "+data.length+str);
-                }
-            }
-        };
-
-        thread.start();
-
 
     }
 

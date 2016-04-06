@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoveryFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+public class DiscoveryFragment extends Fragment {
 
 
     private ViewPager mPager;
@@ -58,18 +58,5 @@ public class DiscoveryFragment extends Fragment implements TabLayout.OnTabSelect
         return ret;
     }
 
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
 
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
 }

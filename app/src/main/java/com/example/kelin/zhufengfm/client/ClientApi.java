@@ -57,8 +57,35 @@ public final class ClientApi {
                 e.printStackTrace();
             }
         }
+        return ret;
+    }
 
+    /**
+     * 获取发现部分的分类
+     * 接口 12
+     * @return
+     */
+    public static String getDiscoveryCategories(){
+        String ret = null;
 
+        StringBuilder sb = new StringBuilder(API_POINT);
+        sb.append("/discovery/v1/categories");
+
+        sb.append("?device=android");
+        sb.append("&picVersion=10");
+        sb.append("&scale=2");
+
+        String url = sb.toString();
+
+        byte[] data = HttpUtils.doGet(url);
+
+        if (data != null) {
+            try {
+                ret = new String(data,"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
         return ret;
     }

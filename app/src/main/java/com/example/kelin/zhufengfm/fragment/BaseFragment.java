@@ -16,6 +16,6 @@ public class BaseFragment extends Fragment {
      */
     public String getFragmentTitle(){
         return "No Title";
-    };
+    }
 
 }
