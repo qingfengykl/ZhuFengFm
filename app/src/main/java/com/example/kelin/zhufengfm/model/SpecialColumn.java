@@ -22,15 +22,14 @@ public class SpecialColumn extends DiscoveryRecommendItem {
         super.parseJson(json);
 
         mInfos = new ArrayList<>();
-
+        SpecialColumnInfo info = null;
         JSONArray list = json.getJSONArray("list");
         for (int i = 0; i < list.length(); i++) {
             JSONObject jsonObject = list.getJSONObject(i);
-            SpecialColumnInfo info = new SpecialColumnInfo();
+            info = new SpecialColumnInfo();
             info.parseJson(jsonObject);
-
             mInfos.add(info);
         }
-
+        info = null;
     }
 }

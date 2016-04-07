@@ -1,19 +1,24 @@
 package com.example.kelin.zhufengfm.fragment.discovery;
 
 
+import android.app.ActionBar;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.kelin.zhufengfm.R;
+import com.example.kelin.zhufengfm.adapter.ImageAdapter;
 import com.example.kelin.zhufengfm.adapter.RecommendAdapter;
 import com.example.kelin.zhufengfm.fragment.BaseFragment;
 import com.example.kelin.zhufengfm.model.DiscoveryColumns;
@@ -42,6 +47,8 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
     private List<DiscoveryRecommendItem> mItems;
 
     private FocusImages mFocusImages;
+    private ImageAdapter mImageAdapter;
+    private ViewPager mPager;
 
     public DiscoveryRecommendFragment() {
         // Required empty public constructor
@@ -66,12 +73,15 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
 
         listView.setAdapter(mAdapter);
 
-        ViewPager pager = new ViewPager(getContext());
+        mPager = new ViewPager(getContext());
+        mPager.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                550));
+        mFocusImages = new FocusImages();
+        mImageAdapter = new ImageAdapter(getContext(),mFocusImages.getImages());
 
-
-
-        listView.addHeaderView(pager);
-
+        mPager.setAdapter(mImageAdapter);
+        listView.addHeaderView(mPager);
 
         return ret;
     }
@@ -100,10 +110,10 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
                             albums.parseJson(object);
                             mItems.add(albums);
 
-//                            //获得轮播图片
-//                            object = jsonObject.getJSONObject("focusImages");
-//                            mFocusImages = new FocusImages();
-//                            mFocusImages.parseJson(object);
+                            //获得轮播图片
+                            object = jsonObject.getJSONObject("focusImages");
+
+                            mFocusImages.parseJson(object);
 
                             //获取精品听单
 
@@ -134,6 +144,7 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
                             e.printStackTrace();
                         }
                         mAdapter.notifyDataSetChanged();
+                        mImageAdapter.notifyDataSetChanged();
                     }
 
                 }

@@ -28,17 +28,18 @@ public class RecommendAlbums extends DiscoveryRecommendItem {
 
             JSONArray array = json.getJSONArray("list");
             albums = new ArrayList<>();
-
+            RecommendAlbumInfo info = null;
             int len = array.length();
             for (int i = 0; i < len; i++) {
                 JSONObject jsonObject = array.getJSONObject(i);
 
-                RecommendAlbumInfo info = new RecommendAlbumInfo();
+                 info = new RecommendAlbumInfo();
 
                 info.parseJson(jsonObject);
 
                 albums.add(info);
             }
+            info = null;
 
         }
     }
