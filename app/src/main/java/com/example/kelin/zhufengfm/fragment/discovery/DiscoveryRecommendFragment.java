@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,16 @@ import android.widget.Toast;
 import com.example.kelin.zhufengfm.R;
 import com.example.kelin.zhufengfm.adapter.RecommendAdapter;
 import com.example.kelin.zhufengfm.fragment.BaseFragment;
+import com.example.kelin.zhufengfm.model.DiscoveryColumns;
 import com.example.kelin.zhufengfm.model.DiscoveryRecommendItem;
+import com.example.kelin.zhufengfm.model.FocusImages;
 import com.example.kelin.zhufengfm.model.RecommendAlbums;
+import com.example.kelin.zhufengfm.model.SpecialColumn;
 import com.example.kelin.zhufengfm.tasks.DiscoveryRecommendTask;
 import com.example.kelin.zhufengfm.tasks.TaskCallBack;
 import com.example.kelin.zhufengfm.tasks.TaskResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +40,8 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
     private RecommendAdapter mAdapter;
 
     private List<DiscoveryRecommendItem> mItems;
+
+    private FocusImages mFocusImages;
 
     public DiscoveryRecommendFragment() {
         // Required empty public constructor
@@ -59,6 +66,12 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
 
         listView.setAdapter(mAdapter);
 
+        ViewPager pager = new ViewPager(getContext());
+
+
+
+        listView.addHeaderView(pager);
+
 
         return ret;
     }
@@ -80,12 +93,41 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
                         JSONObject jsonObject = (JSONObject) data;
 
                         try {
+
                             //获取小编推荐
                             JSONObject object = jsonObject.getJSONObject("editorRecommendAlbums");
                             RecommendAlbums albums = new RecommendAlbums();
                             albums.parseJson(object);
                             mItems.add(albums);
+
+//                            //获得轮播图片
+//                            object = jsonObject.getJSONObject("focusImages");
+//                            mFocusImages = new FocusImages();
+//                            mFocusImages.parseJson(object);
+
+                            //获取精品听单
+
+                            object = jsonObject.getJSONObject("specialColumn");
+                            SpecialColumn sColumn = new SpecialColumn();
+                            sColumn.parseJson(object);
+                            Log.d("ddd", "onTaskFinished: "+sColumn);
+                            mItems.add(sColumn);
+
+                            //获取发现新奇
+
+                            object = jsonObject.getJSONObject("discoveryColumns");
+                            DiscoveryColumns columns = new DiscoveryColumns();
+                            columns.parseJson(object);
+                            mItems.add(columns);
+
                             //获取听新闻
+                            object = jsonObject.getJSONObject("hotRecommends");
+                            JSONArray list = object.getJSONArray("list");
+                            for (int i = 0; i < list.length(); i++) {
+                                albums = new RecommendAlbums();
+                                albums.parseJson(list.getJSONObject(i));
+                                mItems.add(albums);
+                            }
 
 
                         } catch (JSONException e) {

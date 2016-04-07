@@ -1,12 +1,15 @@
 package com.example.kelin.zhufengfm;
 
 import android.app.DownloadManager;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.kelin.zhufengfm.fragment.CustomFragment;
@@ -55,16 +58,32 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         transaction.commit();
 
-        //------------------------------------------
+        //----------------------------------------------
 
+        /**
+         * 设置导航按钮的图标
+         */
         RadioGroup tabBar = (RadioGroup) findViewById(R.id.main_tab_bar);
 
         if (tabBar != null) {
             tabBar.setOnCheckedChangeListener(this);
         }
 
+        int[] rids = new int[]{
+                R.id.main_tab_item_discovery,
+                R.id.main_tab_item_custom,
+                R.id.main_tab_item_download,
+                R.id.main_tab_item_personal
+        };
+        for (int i = 0; i < rids.length; i++) {
+            RadioButton button = (RadioButton) findViewById(rids[i]);
+            Resources res = getResources();
 
+            Drawable drawable = res.getDrawable(R.mipmap.ic_launcher);
+            drawable.setBounds(0,0,60,60);
 
+            button.setCompoundDrawables(null,drawable,null,null);
+        }
 
     }
 

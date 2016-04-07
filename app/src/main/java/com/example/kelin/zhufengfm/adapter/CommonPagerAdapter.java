@@ -20,8 +20,6 @@ public class CommonPagerAdapter extends FragmentPagerAdapter {
         mFragments = fragments;
     }
 
-
-
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragments.get(position).getFragmentTitle();
