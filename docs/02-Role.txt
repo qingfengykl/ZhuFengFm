@@ -22,3 +22,33 @@
     抽象类：：可以定义多个类公共的代码，同时也可以让每一个子类实现特有的方法
 
 9.  关于数据的解析。。谁的数据谁自己解析
+
+10. ！！！默认情况下！！！
+        listView认为每一个Item的类型是相同的，因此会直接复用
+        所有的每一个布局都能够复用
+
+        如果item的布局是不同的，！！！必须设置adapter中的！！！
+        两个方法，来检查item中的布局类型
+        如果不进行设置，布局就混乱了。可能出现空指针
+
+        错乱的原因是convertView被设置错了
+
+11. 当baseAdapter重写了getViewTypeCount()方法，返回数值大于1的时候。
+    listView内部会自动创建试图缓冲区，实际上就是一个数组
+
+    ArrayList<View>[] buffer = new ArrayList<>[getViewTypeCount()];
+
+    这个缓冲区就是用于存储可以复用的视图
+
+    当item从listView的可见区域移出去的时候；
+    就会检查item对应的viewType，相当于数组的索引
+
+    例如：0， 就会把buffer[0].add[View]
+
+    有item需要加载和现实的时候，先检查这个item对应的视图的类型 view type
+
+        例如 返回0，代表ListView需要从缓冲区buffer[0] 查找是否有视图
+             返回1，就去buffer[1] 查找试图
+
+             如果找到视图，调用getview的时候。convertView就会设置为可以复用的视图了
+

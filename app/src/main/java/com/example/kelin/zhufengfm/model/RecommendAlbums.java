@@ -19,7 +19,7 @@ public class RecommendAlbums extends DiscoveryRecommendItem {
     private List<RecommendAlbumInfo> albums;
 
     /**
-     * 用于解析小编推荐和热门推荐的内容
+     * 用于解析小编推荐和热门推荐中的子类的的内容
      * @param json
      */
     public void parseJson(JSONObject json) throws JSONException {

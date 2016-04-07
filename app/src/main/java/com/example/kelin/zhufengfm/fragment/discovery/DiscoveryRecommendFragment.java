@@ -85,6 +85,7 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
                             RecommendAlbums albums = new RecommendAlbums();
                             albums.parseJson(object);
                             mItems.add(albums);
+                            //获取听新闻
 
 
                         } catch (JSONException e) {

@@ -11,13 +11,26 @@
             ViewPager  5个小的fragment
 
                 推荐 DiscoveryRecommendFragment
+
                 分类 DiscoveryCategoryFragment
                 广播 DiscoveryRadioFragment
                 榜单 DiscoveryRatingFragment
-                主播 DiscoveryDiscoveryAnchorFragment
+                主播 DiscoveryAnchorFragment
 
         定制听 CustomFragment
         下载听 DownLoadTingFragment
         我 PersonalFragment
 
     D.  TODO  确认其余的网络。任务。解析。存储
+
+2.  接口对应的功能
+
+        推荐  接口11
+        分类  接口12
+        分类点击进入的界面   接口13
+
+        推荐中-》  专辑推荐图标点击进入专辑详情界面   接口17
+
+            主要返回 专辑基本信息和专辑曲目列表
+
+        接口18： 获取指定专辑中，指定曲目信息，并且包含用户信息
