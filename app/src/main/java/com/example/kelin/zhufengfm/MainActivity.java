@@ -1,12 +1,15 @@
 package com.example.kelin.zhufengfm;
 
 import android.app.DownloadManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.RadioButton;
@@ -16,6 +19,7 @@ import com.example.kelin.zhufengfm.fragment.CustomFragment;
 import com.example.kelin.zhufengfm.fragment.DiscoveryFragment;
 import com.example.kelin.zhufengfm.fragment.DownLoadTingFragment;
 import com.example.kelin.zhufengfm.fragment.PersonalFragment;
+import com.example.kelin.zhufengfm.media.PlayService;
 import com.example.kelin.zhufengfm.utils.HttpUtils;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
@@ -30,6 +34,16 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //------------------------------------------
+        /**
+         * 启动音乐播放服务
+         */
+        Intent intent = new Intent(this, PlayService.class);
+        startService(intent);
+
+
+        //------------------------------------------
 
         // TODO: fragment是否进行replace操作
 
@@ -87,6 +101,52 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
     }
 
+    private AlertDialog mExitDialog;
+    /**
+     * 回退键
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (mExitDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            mExitDialog = builder
+                    .setTitle("温馨提示")
+                    .setMessage("确认退出珠峰听书吗？")
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(MainActivity.this, PlayService.class);
+                            stopService(intent);
+                            finish();
+                        }
+                    })
+                    .setNeutralButton("最小化", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .create();
+        }
+
+        mExitDialog.show();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mExitDialog = null;
+    }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

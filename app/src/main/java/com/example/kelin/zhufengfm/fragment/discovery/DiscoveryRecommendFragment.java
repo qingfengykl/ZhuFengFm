@@ -2,6 +2,7 @@ package com.example.kelin.zhufengfm.fragment.discovery;
 
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.kelin.zhufengfm.AlbumDetailActivity;
+import com.example.kelin.zhufengfm.Constants;
 import com.example.kelin.zhufengfm.R;
 import com.example.kelin.zhufengfm.adapter.ImageAdapter;
 import com.example.kelin.zhufengfm.adapter.RecommendAdapter;
 import com.example.kelin.zhufengfm.fragment.BaseFragment;
+import com.example.kelin.zhufengfm.media.PlayService;
 import com.example.kelin.zhufengfm.model.DiscoveryColumns;
 import com.example.kelin.zhufengfm.model.DiscoveryRecommendItem;
 import com.example.kelin.zhufengfm.model.FocusImages;
+import com.example.kelin.zhufengfm.model.RecommendAlbumInfo;
 import com.example.kelin.zhufengfm.model.RecommendAlbums;
 import com.example.kelin.zhufengfm.model.SpecialColumn;
 import com.example.kelin.zhufengfm.tasks.DiscoveryRecommendTask;
@@ -40,7 +45,7 @@ import java.util.List;
 /**
  * 发现  推荐部分
  */
-public class DiscoveryRecommendFragment extends BaseFragment implements TaskCallBack {
+public class DiscoveryRecommendFragment extends BaseFragment implements TaskCallBack, View.OnClickListener {
 
     private RecommendAdapter mAdapter;
 
@@ -58,7 +63,9 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mItems = new ArrayList<>();
+        mFocusImages = new FocusImages();
         mAdapter = new RecommendAdapter(getContext(),mItems);
+        mAdapter.setOnClickListener(this);
         DiscoveryRecommendTask task = new DiscoveryRecommendTask(this);
         task.execute();
     }
@@ -77,7 +84,7 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
         mPager.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 550));
-        mFocusImages = new FocusImages();
+
         mImageAdapter = new ImageAdapter(getContext(),mFocusImages.getImages());
 
         mPager.setAdapter(mImageAdapter);
@@ -154,5 +161,25 @@ public class DiscoveryRecommendFragment extends BaseFragment implements TaskCall
                 Snackbar.make(getView(),"服务器数据错误",Snackbar.LENGTH_SHORT).show();
             }
         }
+    }
+
+    /**
+     * ListView中专辑Item的点击事件
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        Object tag = v.getTag();
+        RecommendAlbumInfo info = (RecommendAlbumInfo) tag;
+
+        Intent intent = new Intent(getActivity(), AlbumDetailActivity.class);
+
+        intent.putExtra(Constants.EXTRA_ALBUM_ID,info.getAlbumId());
+        intent.putExtra(Constants.EXTRA_TRACK_ID,info.getTrackId());
+
+        startActivity(intent);
+
+
+
     }
 }

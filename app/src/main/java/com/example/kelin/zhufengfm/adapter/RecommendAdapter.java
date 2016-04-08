@@ -1,6 +1,7 @@
 package com.example.kelin.zhufengfm.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kelin.zhufengfm.Constants;
 import com.example.kelin.zhufengfm.R;
+import com.example.kelin.zhufengfm.media.PlayService;
 import com.example.kelin.zhufengfm.model.DiscoveryColumns;
 import com.example.kelin.zhufengfm.model.DiscoveryColumnsInfo;
 import com.example.kelin.zhufengfm.model.DiscoveryRecommendItem;
+import com.example.kelin.zhufengfm.model.RecommendAlbumInfo;
 import com.example.kelin.zhufengfm.model.RecommendAlbums;
 import com.example.kelin.zhufengfm.model.SpecialColumn;
 import com.example.kelin.zhufengfm.model.SpecialColumnInfo;
@@ -39,9 +43,15 @@ public class RecommendAdapter extends BaseAdapter {
     private Context mContext;
     private List<DiscoveryRecommendItem> mItems;
 
+    private View.OnClickListener mOnClickListener;
+
     public RecommendAdapter(Context context, List<DiscoveryRecommendItem> items) {
         mContext = context;
         mItems = items;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
     }
 
     @Override
@@ -56,9 +66,9 @@ public class RecommendAdapter extends BaseAdapter {
         DiscoveryRecommendItem item = mItems.get(position);
         if (item instanceof RecommendAlbums) {
             ret = TYPE_RECOMMEND;
-        }else if (item instanceof SpecialColumn) {
+        } else if (item instanceof SpecialColumn) {
             ret = TYPE_SPECIAL;
-        }else if (item instanceof DiscoveryColumns) {
+        } else if (item instanceof DiscoveryColumns) {
             ret = TYPE_DISCOVERY;
         }
         return ret;
@@ -96,14 +106,14 @@ public class RecommendAdapter extends BaseAdapter {
                     holder = new RecommendViewHolder(convertView);
                     convertView.setTag(holder);
                 }
-                setRecommendContent(position,holder);
+                setRecommendContent(position, holder);
                 break;
 
             //-----------------------------------------------------------------
 
             case TYPE_SPECIAL:
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(R.layout.discovery_recommend_special_item,parent,false);
+                    convertView = LayoutInflater.from(mContext).inflate(R.layout.discovery_recommend_special_item, parent, false);
                 }
                 SpecialViewHolder specialHolder = (SpecialViewHolder) convertView.getTag();
                 if (specialHolder == null) {
@@ -111,7 +121,7 @@ public class RecommendAdapter extends BaseAdapter {
                     convertView.setTag(specialHolder);
                 }
 
-                setSpecialContent(position,specialHolder);
+                setSpecialContent(position, specialHolder);
 
                 break;
 
@@ -119,7 +129,7 @@ public class RecommendAdapter extends BaseAdapter {
 
             case TYPE_DISCOVERY:
                 if (convertView == null) {
-                    convertView = LayoutInflater.from(mContext).inflate(R.layout.discovery_recommend_discovery_item,parent,false);
+                    convertView = LayoutInflater.from(mContext).inflate(R.layout.discovery_recommend_discovery_item, parent, false);
                 }
                 DiscoveryViewHolder discoveryHolder = (DiscoveryViewHolder) convertView.getTag();
                 if (discoveryHolder == null) {
@@ -127,29 +137,26 @@ public class RecommendAdapter extends BaseAdapter {
                     convertView.setTag(discoveryHolder);
                 }
 
-                setDiscoveryContent(position,discoveryHolder);
+                setDiscoveryContent(position, discoveryHolder);
                 break;
         }
         return convertView;
     }
 
-    private void setRecommendContent(int position,RecommendViewHolder holder) {
+    private void setRecommendContent(int position, RecommendViewHolder holder) {
         RecommendAlbums items = (RecommendAlbums) (mItems.get(position));
         holder.mHeader.setText(items.getTitle());
         for (int i = 0; i < 3; i++) {
-            Picasso.with(mContext).load(items.getAlbums().get(i).getCoverLarge()).into(holder.mImageViews[i]);
-            holder.mTitles[i].setText(items.getAlbums().get(i).getTitle());
-            holder.mTags[i].setText(items.getAlbums().get(i).getTags());
-            holder.mImageViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Snackbar.make(v,""+v.getTag(),Snackbar.LENGTH_SHORT).show();
-                }
-            });
+            RecommendAlbumInfo info = items.getAlbums().get(i);
+            Picasso.with(mContext).load(info.getCoverLarge()).into(holder.mImageViews[i]);
+            holder.mTitles[i].setText(info.getTitle());
+            holder.mTags[i].setText(info.getTags());
+            holder.mImageViews[i].setOnClickListener(mOnClickListener);
+            holder.mImageViews[i].setTag(info);
         }
     }
 
-    private void setSpecialContent(int position,SpecialViewHolder holder){
+    private void setSpecialContent(int position, SpecialViewHolder holder) {
         SpecialColumn items = (SpecialColumn) mItems.get(position);
         holder.mHeader.setText(items.getTitle());
         List<SpecialColumnInfo> infos = items.getInfos();
@@ -161,7 +168,7 @@ public class RecommendAdapter extends BaseAdapter {
         }
     }
 
-    private void setDiscoveryContent(int position,DiscoveryViewHolder holder){
+    private void setDiscoveryContent(int position, DiscoveryViewHolder holder) {
         DiscoveryColumns columns = (DiscoveryColumns) mItems.get(position);
         holder.mHeader.setText(columns.getTitle());
         List<DiscoveryColumnsInfo> infos = columns.getInfos();
@@ -197,7 +204,7 @@ public class RecommendAdapter extends BaseAdapter {
         }
     }
 
-    public static class SpecialViewHolder{
+    public static class SpecialViewHolder {
         public TextView mHeader;
         public ImageView[] mImageViews = new ImageView[2];
         public TextView[] mTitles = new TextView[2];
@@ -223,13 +230,13 @@ public class RecommendAdapter extends BaseAdapter {
         }
     }
 
-    public static class DiscoveryViewHolder{
+    public static class DiscoveryViewHolder {
         public TextView mHeader;
         public ImageView[] mImages = new ImageView[4];
         public TextView[] mTitle = new TextView[4];
         public TextView[] mSubTitle = new TextView[4];
 
-        public DiscoveryViewHolder(View itemView){
+        public DiscoveryViewHolder(View itemView) {
             mHeader = (TextView) itemView.findViewById(R.id.discovery_recommend_discovery_head);
 
             mImages[0] = (ImageView) itemView.findViewById(R.id.discovery_recommend_discovery_image1);
@@ -250,4 +257,24 @@ public class RecommendAdapter extends BaseAdapter {
         }
 
     }
+
+//    View.OnClickListener listener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            String a = "";
+//            RecommendAlbumInfo tag = (RecommendAlbumInfo) v.getTag();
+//            if (tag != null) {
+//                a = "" + tag.getAlbumId() + "  "+tag.getTracks();
+//
+//                Intent intent = new Intent(mContext, PlayService.class);
+//                intent.putExtra(Constants.EXTRA_ALBUM_ID,tag.getAlbumId());
+//                intent.putExtra(Constants.EXTRA_TRACK_ID,tag.getTrackId());
+//                mContext.startService(intent);
+//                Snackbar.make(v, "启动服务" + a, Snackbar.LENGTH_SHORT).show();
+//            }else {
+//
+//                Snackbar.make(v, "" + a, Snackbar.LENGTH_SHORT).show();
+//            }
+//        }
+//    };
 }

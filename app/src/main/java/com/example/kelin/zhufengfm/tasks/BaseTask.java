@@ -6,6 +6,8 @@ package com.example.kelin.zhufengfm.tasks;
 
 import android.os.AsyncTask;
 
+import java.lang.ref.SoftReference;
+
 /**
  * 公共的一部任务的定义，主要处理接口回调的操作
  *
@@ -14,16 +16,16 @@ import android.os.AsyncTask;
 
 public abstract class BaseTask extends AsyncTask<String,Integer,TaskResult>{
 
-    protected TaskCallBack mCallBack;
+    protected SoftReference<TaskCallBack> mCallBack;
 
     public BaseTask(TaskCallBack callBack) {
-        mCallBack = callBack;
+        mCallBack = new SoftReference<>(callBack);
     }
 
     @Override
     protected void onPostExecute(TaskResult result) {
         if (mCallBack != null) {
-            mCallBack.onTaskFinished(result);
+            mCallBack.get().onTaskFinished(result);
         }
     }
 }

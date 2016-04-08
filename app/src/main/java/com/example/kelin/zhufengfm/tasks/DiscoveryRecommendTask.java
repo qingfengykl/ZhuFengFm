@@ -24,6 +24,9 @@ public class DiscoveryRecommendTask extends BaseTask {
     protected TaskResult doInBackground(String... params) {
         TaskResult ret = new TaskResult();
 
+
+
+
         String str = ClientApi.getDiscoveryRecommends(true, true);
         if (str != null) {
 
